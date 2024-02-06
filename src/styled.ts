@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   position: relative;
   height: 100dvh;
   overflow: hidden;
-  background-color: #ffe8ec;
+  background-color: #c5b9aa;
   color: #000;
   /* background-image: linear-gradient(
     90deg,
@@ -45,6 +45,70 @@ export const Title = styled.h3`
   font-size: 32px;
   padding: 16px;
   font-weight: bold;
+
+  .todo {
+    position: relative;
+    font-size: 30px;
+    text-transform: capitalize;
+    color: black;
+    overflow: hidden;
+    -webkit-text-stroke: 1px transparent;
+    transition: 0.8s all;
+  }
+
+  .wow {
+    position: relative;
+    font-size: 30px;
+    text-transform: capitalize;
+    -webkit-text-stroke: 1px black;
+    color: transparent;
+    transition: 0.4s all;
+  }
+  .wow::before {
+    content: attr(data-fill-text);
+    background: linear-gradient(
+      90deg,
+      #ff3cdf 0,
+      #c799ff 16.66%,
+      #2828f4 33.33%,
+      #ff3cdf 50%,
+      #c799ff 66.66%,
+      #2828f4 83.33%,
+      #ff3cdf 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: -1%;
+    transform: scale(0);
+    transition: 0.4s all;
+    overflow: hidden;
+  }
+
+  &:hover {
+    cursor: pointer;
+    .wow {
+      color: white;
+      -webkit-text-stroke: 1px transparent;
+    }
+    .wow::before {
+      transform: scale(1);
+      width: 100%;
+    }
+
+    .todo {
+      color: #c5b9aa;
+      -webkit-text-stroke: 1px #c5b9aa;
+    }
+  }
+
+  .wow:hover::before {
+    width: 100%;
+  }
 `;
 
 export const TodoItemCSS = styled.div`
