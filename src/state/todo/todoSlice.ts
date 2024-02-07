@@ -13,6 +13,9 @@ const totoSlice = createSlice({
   name: "todoSlice",
   initialState,
   reducers: {
+    updateAll: (state, action: PayloadAction<ITodo[]>) => {
+      return action.payload;
+    },
     addNewTodo: (state, action: PayloadAction<ITodo>) => {
       if (!state) return;
       state.push(action.payload);

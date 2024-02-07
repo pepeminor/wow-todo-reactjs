@@ -81,7 +81,7 @@ const TodoItem = ({ todo }: IProps) => {
   );
 
   return (
-    <TodoItemCSS draggable onClick={onOpenModalDeploy}>
+    <TodoItemCSS onClick={onOpenModalDeploy}>
       <div className="group-left">
         <StatusText $isDone={todo.isDone}>{isDoneText}</StatusText>
         <p>{todo.title}</p>
