@@ -1,6 +1,7 @@
 import React, {
   ReactElement,
   createContext,
+  memo,
   useCallback,
   useContext,
   useEffect,
@@ -147,7 +148,7 @@ const AppModalContextProvider = (props: IChildren) => {
   );
 };
 
-export default AppModalContextProvider;
+export default memo(AppModalContextProvider);
 
 export const useAppModalContext = () =>
   useContext(AppModalContext) as IAppModalContext;

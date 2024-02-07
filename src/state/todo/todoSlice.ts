@@ -17,7 +17,7 @@ const totoSlice = createSlice({
       return action.payload;
     },
     addNewTodo: (state, action: PayloadAction<ITodo>) => {
-      if (!state) return;
+      if (!state || !action.payload.id) return;
       state.push(action.payload);
     },
     editTodo: (state, action: PayloadAction<ITodo>) => {
@@ -27,7 +27,7 @@ const totoSlice = createSlice({
       }
     },
     deleteTodo: (state, action: PayloadAction<ITodo>) => {
-      const index = state.findIndex((i) => i.id === action.payload.id);
+      const index = state.findIndex((i) => i?.id === action.payload.id);
       if (index !== -1) {
         state.splice(index, 1);
       }

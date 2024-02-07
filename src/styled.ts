@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   position: relative;
   height: 100dvh;
   overflow: hidden;
-  background-color: #c5b9aa;
+  background-color: #bab9b7;
   color: #000;
   /* background-image: linear-gradient(
     90deg,
@@ -101,7 +101,7 @@ export const Title = styled.h3`
     }
 
     .todo {
-      color: #c5b9aa;
+      color: #bab9b7;
       -webkit-text-stroke: 1px #c5b9aa;
     }
   }

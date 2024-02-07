@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 // import { CustomButton, CustomDiv, Title, WrapBody } from "@/app/styled";
@@ -101,4 +101,4 @@ const CreateTodoModal = () => {
   );
 };
 
-export default CreateTodoModal;
+export default memo(CreateTodoModal);

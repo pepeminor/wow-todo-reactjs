@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import CreateTodoModal from "../Modals/CreateTodoModal";
@@ -17,7 +17,6 @@ const HeaderAction = () => {
   const isMobile = width < 769;
 
   const openAddNewTodoModal = useCallback(() => {
-    console.log('aloooo')
     return (
       openModal &&
       openModal?.({
@@ -67,7 +66,7 @@ const HeaderAction = () => {
   );
 };
 
-export default HeaderAction;
+export default memo(HeaderAction);
 
 const ButtonAddTodo = styled(Button)`
   width: 140px;
@@ -79,7 +78,7 @@ const ButtonAddTodo = styled(Button)`
 
 const FormSelect = styled.div`
   padding: 12px 24px 12px;
-  background-color: #c5b9aa;
+  background-color: #bab9b7;
   margin-top: 32px;
   display: flex;
   justify-content: space-between;

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import NoData from "../NoData";
-import { useCallback, useRef } from "react";
+import { memo, useCallback, useMemo, useRef } from "react";
 import CreateTodoModal from "../Modals/CreateTodoModal";
 import { useAppModalContext } from "../../Context/ModalContext";
 import { RootState } from "../../state/store";
@@ -11,10 +11,15 @@ import {
 } from "../../state/sortBy/sortBySlice";
 import { ITodo, todoActions } from "../../state/todo/todoSlice";
 import TodoItem from "../TodoItem";
+import useOpenModals from "../../hooks/useOpenModals";
 
 const ListTodoItem = () => {
   const { openModal } = useAppModalContext();
   const dispatch = useDispatch();
+
+  const { openInfoTodoModal, openDeleteModal, openEditTodoModal } =
+    useOpenModals();
+
   const todos = useSelector((state: RootState) => state.todoReducer);
   const sortByReducer = useSelector((state: RootState) => state.sortByReducer);
 
@@ -23,13 +28,29 @@ const ListTodoItem = () => {
 
   const isDone = sortByReducer === SORT_STATUS_TODO.COMPLETE;
 
-  const sortItems =
-    todos &&
-    todos.length &&
-    todos.filter((i: ITodo) => {
-      if (sortByReducer === SORT_STATUS_TODO.ALL) return i;
-      return i.isDone === isDone;
-    });
+  function handleShowInfo(todo: ITodo) {
+    openInfoTodoModal(todo);
+  }
+
+  function handleDelete(todo: ITodo) {
+    openDeleteModal(todo);
+  }
+
+  function handleEdit(todo: ITodo) {
+    openEditTodoModal(todo);
+  }
+
+  const sortItems = useMemo(() => {
+    if (!todos || !todos.length) return [];
+    return (
+      todos &&
+      todos.length &&
+      todos.filter((i: ITodo) => {
+        if (sortByReducer === SORT_STATUS_TODO.ALL) return i;
+        return i?.isDone === isDone;
+      })
+    );
+  }, [todos, sortByReducer]);
 
   const sortByAll = () => {
     dispatch(sortByActions.changeSortBy(SORT_STATUS_TODO.ALL));
@@ -52,17 +73,26 @@ const ListTodoItem = () => {
   }, [openModal]);
 
   function handleDragSort() {
-    if (!sortItems || !todos) return;
-    const cloneTodos = [...todos];
+    if (
+      !sortItems ||
+      !todos.length ||
+      !dragItem.current ||
+      !draggedOverItem.current ||
+      dragItem.current === draggedOverItem.current
+    )
+      return;
 
+    const cloneTodos = [...todos];
     const indexDragItem = cloneTodos.findIndex(
       (i) => i.id === dragItem.current,
     );
     const indexDraggedOverItem = cloneTodos.findIndex(
       (i) => i.id === draggedOverItem.current,
     );
-    const temp = cloneTodos[indexDragItem];
 
+    if (indexDragItem < 0 || indexDraggedOverItem < 0) return;
+
+    const temp = cloneTodos[indexDragItem];
     cloneTodos[indexDragItem] = cloneTodos[indexDraggedOverItem];
     cloneTodos[indexDraggedOverItem] = temp;
 
@@ -78,10 +108,15 @@ const ListTodoItem = () => {
             draggable
             onDragStart={() => (dragItem.current = i.id)}
             onDragEnter={() => (draggedOverItem.current = i.id)}
-            onDragEnd={handleDragSort}
             onDragOver={(e) => e.preventDefault()}
+            onDragEnd={handleDragSort}
           >
-            <TodoItem todo={i} />
+            <TodoItem
+              handleShowInfo={handleShowInfo}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              todo={i}
+            />
           </div>
         ))
       ) : todos && todos.length ? (
@@ -101,7 +136,7 @@ const ListTodoItem = () => {
   );
 };
 
-export default ListTodoItem;
+export default memo(ListTodoItem);
 
 const WrapListItem = styled.div`
   max-height: 84%;
